@@ -109,7 +109,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="flex min-h-screen flex-col bg-white items-center justify-between">
       <nav className='mt-8 ml-auto mr-14'>
         <button className={`bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto`} onClick={() => {setShowModal(true)}} > Connect </button>
       </nav>

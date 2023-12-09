@@ -178,7 +178,6 @@ export default function RootLayout({
               {/* <button onClick={handleSendApiCall}>Send</button>
             <button onClick={() => setShowModal(false)}>Close</button> */}
             </div>
-
             <div className='floatingButton'>
               {/* <input
                     type='text'
