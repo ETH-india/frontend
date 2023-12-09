@@ -4,6 +4,7 @@ import useAccessToken from '../hooks/useAccessToken';
 import { get } from 'http';
 import { useAtom } from 'jotai';
 import { modalAtom } from '../store/modalStore';
+import SVGComponent from '../microphone';
 
 const SiriComponent: React.FC = () => {
 	const [listening, setListening] = useState(false);
@@ -85,7 +86,7 @@ const SiriComponent: React.FC = () => {
 			for (let i = event.resultIndex; i < event.results.length; i++) {
 				const transcript = event.results[i][0].transcript.trim();
 				setText(transcript);
-				if (transcript.toLowerCase().includes('hey iris')) {
+				if (transcript.toLowerCase().includes('iris')) {
 					setShowModal(true);
 					setListening(false);
 					recognition.stop();
@@ -124,42 +125,18 @@ const SiriComponent: React.FC = () => {
 	return (
 		<div style={{ backgroundColor: 'white', height: '100vh' }}>
 			<button onClick={handleStartListening}>Start Listening</button>
-			<p style={{ color: 'black' }}>{text}</p>
+
 			<button onClick={handleStopListening}>Stop Listening</button>
 			{showModal && (
-				<div className='modal'>
-					<div className='voice-elt'>
-						<div className='spinner-border'>
-							<div className='spinner'>
-								<div className='spinner-inside'></div>
+				<>
+					<div className='modal'>
+						<div className='voice-elt'>
+							<div className='spinner-border'>
+								<div className='spinner'>
+									<div className='spinner-inside'></div>
+								</div>
 							</div>
-						</div>
 
-						<div
-							style={{
-								width: 'max-content',
-								padding: '1.2rem',
-								border: '1px solid #e0e0e0',
-								boxShadow: '0px 0px 10px 0px #e0e0e0',
-								background: 'white',
-								borderRadius: '12px 12px 12px 12px',
-								justifyContent: 'center',
-								alignItems: 'center',
-								position: 'absolute',
-								right: '0rem',
-								top: '7rem',
-							}}
-						>
-							<div
-								style={{
-									color: 'black',
-									fontSize: '15px',
-									fontWeight: 500,
-									fontFamily: 'inter',
-								}}
-							>
-								{data ? data : 'loading...'}
-							</div>
 							<div
 								style={{
 									width: 'max-content',
@@ -175,7 +152,25 @@ const SiriComponent: React.FC = () => {
 									top: '7rem',
 								}}
 							>
-								<input
+								<div
+									style={{
+										color: 'black',
+										fontSize: '15px',
+										fontWeight: 500,
+										fontFamily: 'inter',
+									}}
+								>
+									{data ? data : 'loading...'}
+								</div>
+							</div>
+							<br />
+						</div>
+						{/* <button onClick={handleSendApiCall}>Send</button>
+					<button onClick={() => setShowModal(false)}>Close</button> */}
+					</div>
+
+					<div className='floatingButton'>
+						{/* <input
 									type='text'
 									style={{ color: 'black' }}
 									value={action}
@@ -184,14 +179,56 @@ const SiriComponent: React.FC = () => {
 										if (e.key === 'Enter')
 											walletOperations(action);
 									}}
-								/>
-							</div>
-						</div>
-						<br />
+								/> */}
+
+						<button
+							style={{
+								borderRadius: '50%',
+								padding: '1rem',
+							}}
+							onMouseDown={handleStartListening}
+							onMouseUp={() => {
+								handleStopListening();
+								walletOperations(text);
+							}}
+							onTouchStart={handleStartListening} // For touch devices
+							onTouchEnd={() => {
+								handleStopListening();
+								walletOperations(text);
+							}}
+						>
+							<SVGComponent></SVGComponent>
+						</button>
 					</div>
-					{/* <button onClick={handleSendApiCall}>Send</button>
-					<button onClick={() => setShowModal(false)}>Close</button> */}
-				</div>
+					<div className='floatingText'>
+						{/* <input
+									type='text'
+									style={{ color: 'black' }}
+									value={action}
+									onChange={(e) => setAction(e.target.value)}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter')
+											walletOperations(action);
+									}}
+								/> */}
+
+						<h3
+							style={{
+								color: 'black',
+								position: 'fixed',
+								width: '400px',
+								padding: '1rem',
+								border: '1px solid #e0e0e0',
+								borderRadius: '12px 12px 12px 12px',
+								maxHeight: '50px',
+								overflow: 'scroll',
+								maxWidth: '300px',
+							}}
+						>
+							{text}
+						</h3>
+					</div>
+				</>
 			)}
 		</div>
 	);
