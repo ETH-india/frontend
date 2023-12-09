@@ -2,8 +2,7 @@
 import { ethers } from 'ethers'
 import Image from 'next/image'
 import Safe, { EthersAdapter, SafeFactory, SafeAccountConfig  } from '@safe-global/protocol-kit'
-import SafeApiKit from '@safe-global/api-kit'
-import { MetaTransactionData } from '@safe-global/safe-core-sdk-types'
+import SafeApiKit from '@safe-global/api-kit'\
 
 export default function Home() {
 
@@ -45,7 +44,9 @@ export default function Home() {
   }
 
   const doATxn = async () => {
-
+    //get deployed safe
+    //get users address
+    //do a sample txn
   }
 
   return (
@@ -54,7 +55,7 @@ export default function Home() {
         <div className='h-[7rem] flex mt-8 bg-[#1b1b1b] mx-3 rounded-lg'>
           <div className='flex flex-col'>
             <div className='ml-3 mt-4 text-sm text-gray-400'> You Pay</div>
-            <input className='ml-3 mt-4 text-gray-400 bg-transparent text-lg border-none outline-none'/>
+            <input className='ml-3 mt-4 text-gray-400 bg-transparent text-lg border-none outline-none' placeholder='0.00'/>
           </div>
           <div className='flex flex-col justify-center items-end mr-5 w-full'>
             <div className='border border-white w-[7rem] h-8 rounded-2xl text-center flex justify-center items-center font-semibold tracking-wide'> ETH </div>
@@ -66,7 +67,7 @@ export default function Home() {
         <div className='h-[7rem] flex  bg-[#1b1b1b] mx-3 rounded-lg'>
            <div className='flex flex-col'>
               <div className='ml-3 mt-4 text-sm text-gray-400'> You Receive </div>
-              <input className='ml-3 mt-4 text-gray-400 bg-transparent text-lg border-none outline-none'/>
+              <input className='ml-3 mt-4 text-gray-400 bg-transparent text-lg border-none outline-none' placeholder='0.00'/>
             </div>
             <div className='flex flex-col justify-center items-end mr-5 w-full'>
               <div className='border border-white w-[7rem] h-8 rounded-2xl text-center flex justify-center items-center font-semibold tracking-wide'> USDC </div>
