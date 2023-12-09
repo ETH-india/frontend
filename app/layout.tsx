@@ -1,14 +1,14 @@
 'use client';
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
 import React, { useState, useEffect } from 'react';
 import useAccessToken from './hooks/useAccessToken';
 import { useAtom } from 'jotai';
 import { modalAtom } from './store/modalStore';
 import SVGComponent from './microphone';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 // export const metadata: Metadata = {
 //   title: 'IRIS',
@@ -16,11 +16,11 @@ const inter = Inter({ subsets: ['latin'] })
 // }
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode
+	children: React.ReactNode;
 }) {
-  const [listening, setListening] = useState(false);
+	const [listening, setListening] = useState(false);
 	const [text, setText] = useState('');
 	const [showModal, setShowModal] = useAtom(modalAtom);
 	const [data, setData] = useState<string>('');
@@ -67,6 +67,7 @@ export default function RootLayout({
 	};
 
 	const fetchInfo = async () => {
+		await getNewAccessToken();
 		const token = accessToken && JSON.parse(accessToken).token;
 		const options = {
 			method: 'POST',
@@ -122,7 +123,7 @@ export default function RootLayout({
 
 	const handleStartListening = () => {
 		console.log('Getting new access token');
-		getNewAccessToken();
+
 		setListening(true);
 	};
 
@@ -135,47 +136,47 @@ export default function RootLayout({
 		console.log('Sending:', text);
 	};
 
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        {true  && (
-          <div className='fixed inset-0'>
-            <div className='absolute top-[68px] right-[7px]'>
-              <div className='voice-elt'>
-                <div className='spinner-border'>
-                  <div className='spinner'>
-                    <div className='spinner-inside'></div>
-                  </div>
-                </div>
+	return (
+		<html lang='en'>
+			<body className={inter.className}>
+				{true && (
+					<div className='fixed inset-0'>
+						<div className='absolute top-[68px] right-[7px]'>
+							<div className='voice-elt'>
+								<div className='spinner-border'>
+									<div className='spinner'>
+										<div className='spinner-inside'></div>
+									</div>
+								</div>
 
-                <div
-                  style={{
-                    width: 'max-content',
-                    padding: '1.2rem',
-                    border: '1px solid #e0e0e0',
-                    boxShadow: '0px 0px 10px 0px #e0e0e0',
-                    background: 'white',
-                    borderRadius: '12px 12px 12px 12px',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    position: 'absolute',
-                    right: '0rem',
-                    top: '7rem',
-                  }}
-                >
-                  <div
-                    style={{
-                      color: 'black',
-                      fontSize: '13px',
-                      fontWeight: 500,
-                    }}
-                  >
-                    {data ? data : 'loading...'}
-                  </div>
-                </div>
-                <br />
-              </div>
-              {/* <button onClick={handleSendApiCall}>Send</button>
+								<div
+									style={{
+										width: 'max-content',
+										padding: '1.2rem',
+										border: '1px solid #e0e0e0',
+										boxShadow: '0px 0px 10px 0px #e0e0e0',
+										background: 'white',
+										borderRadius: '12px 12px 12px 12px',
+										justifyContent: 'center',
+										alignItems: 'center',
+										position: 'absolute',
+										right: '0rem',
+										top: '7rem',
+									}}
+								>
+									<div
+										style={{
+											color: 'black',
+											fontSize: '13px',
+											fontWeight: 500,
+										}}
+									>
+										{data ? data : 'loading...'}
+									</div>
+								</div>
+								<br />
+							</div>
+							{/* <button onClick={handleSendApiCall}>Send</button>
             <button onClick={() => setShowModal(false)}>Close</button> */}
             </div>
             <div className='floatingButton'>
@@ -190,27 +191,27 @@ export default function RootLayout({
                     }}
                   /> */}
 
-              <button
-                style={{
-                  borderRadius: '50%',
-                  padding: '1rem',
-                }}
-                onMouseDown={handleStartListening}
-                onMouseUp={() => {
-                  handleStopListening();
-                  walletOperations(text);
-                }}
-                onTouchStart={handleStartListening} // For touch devices
-                onTouchEnd={() => {
-                  handleStopListening();
-                  walletOperations(text);
-                }}
-              >
-                <SVGComponent></SVGComponent>
-              </button>
-            </div>
-            <div className='right-[339px]'>
-              {/* <input
+							<button
+								style={{
+									borderRadius: '50%',
+									padding: '1rem',
+								}}
+								onMouseDown={handleStartListening}
+								onMouseUp={() => {
+									handleStopListening();
+									walletOperations(text);
+								}}
+								onTouchStart={handleStartListening} // For touch devices
+								onTouchEnd={() => {
+									handleStopListening();
+									walletOperations(text);
+								}}
+							>
+								<SVGComponent></SVGComponent>
+							</button>
+						</div>
+						<div className='right-[339px]'>
+							{/* <input
                     type='text'
                     style={{ color: 'black' }}
                     value={action}
@@ -220,39 +221,41 @@ export default function RootLayout({
                         walletOperations(action);
                     }}
                   /> */}
-              {listening ? (
-                <div className='animation-wrapper'>
-                  <div className='circle'></div>
-                  <div className='circle'></div>
-                  <div className='circle'></div>
-                  <div className='circle'></div>
-                  <div className='circle'></div>
-                  <div className='circle'></div>
-                  <div className='circle'></div>
-                  <div className='circle'></div>
-                </div>
-              ) : (
-                <h3
-                  style={{
-                    color: 'black',
-                    position: 'fixed',
-                    width: '400px',
-                    padding: '1rem',
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '12px 12px 12px 12px',
-                    maxHeight: '50px',
-                    overflow: 'scroll',
-                    maxWidth: '300px',
-                  }}
-                >
-                  {text}
-                </h3>
-              )}
-            </div>
-          </div>
-        )}
-        {children}
-      </body>
-    </html>
-  )
+							{listening ? (
+								<div className='animation-wrapper'>
+									<div className='circle'></div>
+									<div className='circle'></div>
+									<div className='circle'></div>
+									<div className='circle'></div>
+									<div className='circle'></div>
+									<div className='circle'></div>
+									<div className='circle'></div>
+									<div className='circle'></div>
+								</div>
+							) : (
+								<h3
+									style={{
+										color: 'white',
+										position: 'fixed',
+										width: '400px',
+										padding: '1rem',
+										borderRadius: '12px 12px 12px 12px',
+										maxHeight: '50px',
+										overflow: 'scroll',
+										maxWidth: '300px',
+                    right: "28px",
+                    bottom: "20px",
+                    border: "1px black solid",
+									}}
+								>
+									{text}
+								</h3>
+							)}
+						</div>
+					</div>
+				)}
+				{children}
+			</body>
+		</html>
+	);
 }

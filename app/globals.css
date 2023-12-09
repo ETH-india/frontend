@@ -56,7 +56,7 @@ right: -89%;
 .floatingButton {
 
   position: relative;
-  top: 60%;
+  top: 83%;
 right: -95%;
   transform: translate(-50%, -50%);
   z-index: 1000;
@@ -160,7 +160,7 @@ button:focus {
       .voice-elt {
         position: absolute;
         right: 2rem;
-        top: 1rem;
+        top: -2rem;
         
       }
 
