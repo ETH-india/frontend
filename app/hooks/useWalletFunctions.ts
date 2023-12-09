@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import useAccessToken from './useAccessToken';
 import { atom, useAtom } from 'jotai';
-import { dataAtom } from '../store/modalStore';
+import { dataAtom, isConnectedAtom } from '../store/modalStore';
 
 export default function useWalletFunctions() {
 	const [data, setData] = useAtom(dataAtom);
+	const [connected, setConnected] = useAtom(isConnectedAtom);
 	const { accessToken, getNewAccessToken } = useAccessToken();
 	const speak = (text: string) => {
 		const value = new SpeechSynthesisUtterance(text);
@@ -12,6 +13,7 @@ export default function useWalletFunctions() {
 	};
 
 	const connect = async () => {
+		if (connected) return;
 		await initializeWallet();
 		await walletOperations('connect manu');
 	};
@@ -34,6 +36,7 @@ export default function useWalletFunctions() {
 			);
 			const response_1 = await response.json();
 			console.log(response_1);
+			setConnected(true);
 			//setData(response_1.queryResult.fulfillmentText);
 		} catch (err) {
 			return console.error(err);
@@ -73,5 +76,5 @@ export default function useWalletFunctions() {
 			.catch((err) => console.error(err));
 	};
 
-	return { walletOperations, data, setData, speak, connect };
+	return { walletOperations, data, setData, speak, connect, connected };
 }

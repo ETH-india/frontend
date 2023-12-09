@@ -7,7 +7,7 @@ import Safe, {
 } from '@safe-global/protocol-kit';
 import SafeApiKit from '@safe-global/api-kit';
 import { MetaTransactionData } from '@safe-global/safe-core-sdk-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { modalAtom } from './store/modalStore';
 import { useAtom } from 'jotai';
 import useWalletFunctions from './hooks/useWalletFunctions';
@@ -15,9 +15,15 @@ import useWalletFunctions from './hooks/useWalletFunctions';
 export default function Home() {
 	const [atom, setAtom] = useAtom(modalAtom);
 	const [showModal, setShowModal] = useState(false);
+	const [connectedLabel, setConnectedLabel] = useState('Connect');
 
-	const { connect, setData } = useWalletFunctions();
+	const { connect, setData, connected, data } = useWalletFunctions();
 
+	useEffect(() => {
+		if (connected) {
+			setConnectedLabel('Connected');
+		}
+	}, [connected, data]);
 	const createAccount = async () => {
 		const wallet = ethers.Wallet.createRandom();
 
@@ -129,7 +135,7 @@ export default function Home() {
 
 	return (
 		<main className='flex min-h-screen flex-col bg-white items-center justify-between'>
-			<nav className='mt-8 ml-auto mr-14'>
+			<nav className='mt-8 mr-auto ml-14'>
 				<button
 					className={`bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto`}
 					onClick={() => {
@@ -137,7 +143,7 @@ export default function Home() {
 					}}
 				>
 					{' '}
-					Connect{' '}
+					{connectedLabel}
 				</button>
 			</nav>
 			<div className='flex flex-col border-[#757575] border-solid border m-auto bg-[#131313] w-[27rem] h-[24rem] rounded-xl overflow-hidden'>
@@ -228,12 +234,13 @@ export default function Home() {
 						<div className='flex flex-col'>
 							<h2>Connect with IRIS :)</h2>
 							<button
-								onClick={() => {
+								onClick={async () => {
 									setAtom(true);
-									connect();
+									await connect();
+									setShowModal(false);
 								}}
 							>
-								Connect
+								{connectedLabel}
 							</button>
 						</div>
 					</div>

@@ -77,7 +77,7 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={inter.className}>
 				{showModal && (
-					<div className='fixed inset-0'>
+					<div className='fixed inset-0 left-[55%]'>
 						<div className='absolute top-[68px] right-[7px]'>
 							<div className='voice-elt'>
 								<div className='spinner-border'>
