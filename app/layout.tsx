@@ -63,7 +63,7 @@ export default function RootLayout({
 				const transcript = event.results[i][0].transcript.trim();
 				setText(transcript);
 				if (transcript.toLowerCase().includes('iris')) {
-					setShowModal(true);
+					// setShowModal(true);
 					setListening(false);
 					recognition.stop();
 				}
@@ -101,7 +101,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={inter.className}>
-				{true && (
+				{showModal && (
 					<div className='fixed inset-0'>
 						<div className='absolute top-[68px] right-[7px]'>
 							<div className='voice-elt'>

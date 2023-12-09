@@ -6,11 +6,15 @@ import { MetaTransactionData } from '@safe-global/safe-core-sdk-types'
 import { useState } from 'react'
 import { modalAtom } from './store/modalStore'
 import { useAtom } from 'jotai'
+import useWalletFunctions from './hooks/useWalletFunctions'
 
 export default function Home() {
   const [atom, setAtom] = useAtom(modalAtom)
   const [showModal, setShowModal] = useState(false)
   console.log("here: ", atom)
+
+  const {walletOperations, setData} = useWalletFunctions()
+
   const createAccount = async () => {
     const wallet = ethers.Wallet.createRandom()
 
@@ -145,7 +149,7 @@ export default function Home() {
           <div className='p-8 rounded-[6px] border border-solid border-white h-full m-10 mt-8'>
             <div className='flex flex-col'>
               <h2>Connect with IRIS :)</h2>
-              <button onClick={() => {setAtom(true)}}>Connect</button>
+              <button onClick={() => {setAtom(true); walletOperations("Connect Manu"); }}>Connect</button>
             </div>
           </div>
         </div>

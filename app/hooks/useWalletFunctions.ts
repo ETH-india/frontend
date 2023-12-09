@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import useAccessToken from './useAccessToken';
+import { atom, useAtom } from 'jotai';
 
 export default function useWalletFunctions() {
-	const [data, setData] = useState<string>('');
+	const dataAtom = atom<string>('')
+	const [data, setData] = useAtom(dataAtom);
 	const { accessToken, getNewAccessToken } = useAccessToken();
 	const speak = (text: string) => {
 		const value = new SpeechSynthesisUtterance(text);
