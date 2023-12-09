@@ -39,14 +39,43 @@ button {
 }
 
 .modal {
-  position: fixed;
-  top: 10%;
-  right: -10%;
+
+  position: relative;
+ 
+right: -89%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-
-  padding: 20px;
+  justify-content: space-between;
+  padding: 50px;
   border-radius: 8px;
+
+  width: 300px;
+  text-align: center;
+}
+
+.floatingButton {
+
+  position: relative;
+  top: 60%;
+right: -95%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  justify-content: space-between;
+
+
+  width: 300px;
+  text-align: center;
+}
+
+.floatingText {
+
+  position: relative;
+  top: 55%;
+right: -87%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  justify-content: space-between;
+
 
   width: 300px;
   text-align: center;
