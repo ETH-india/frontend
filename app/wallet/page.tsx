@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import useAccessToken from '../hooks/useAccessToken';
-import { get } from 'http';
 import { useAtom } from 'jotai';
 import { modalAtom } from '../store/modalStore';
 
