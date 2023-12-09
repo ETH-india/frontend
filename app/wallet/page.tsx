@@ -1,26 +1,31 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import useAccessToken from '../hooks/useAccessToken';
+import { get } from 'http';
+import { useAtom } from 'jotai';
+import { modalAtom } from '../store/modalStore';
 
 const SiriComponent: React.FC = () => {
 	const [listening, setListening] = useState(false);
 	const [text, setText] = useState('');
-	const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = useAtom(modalAtom);
 	const [data, setData] = useState<string>('');
 	const [action, setAction] = useState<string>('');
-	let speech: SpeechSynthesisUtterance;
+	const { accessToken, getNewAccessToken } = useAccessToken();
 
-	const speak = async (text: string) => {
-		window.speechSynthesis.speak(speech);
+	const speak = (text: string) => {
+		const value = new SpeechSynthesisUtterance(text);
+		window.speechSynthesis.speak(value);
 	};
 
 	const walletOperations = (textInput: string) => {
-		console.log(textInput);
+		const token = accessToken && JSON.parse(accessToken).token;
+		console.log(textInput, accessToken);
 		const options = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
-				Authorization:
-					'Bearer ya29.a0AfB_byCbnnqobSMgSzeySeArsJTZc_D2ccQL-PComxv-nltZEOPYrCCkMyHynR7e8_eanKg0VdjKzJ7ugiO24VOo805vNrvDz6P8bnZ9KDa1W92WpPXkNnz2lVotZVqgv7y0dJ_DrIlgGC0TlucbtN_jNPDPr8GJoUfuxMJRtvsvmLP-apIZRafD1EBpTvZMmbWJdllgJisgpqcK-F79_IY7VfJncqV8zZjkNjXIfDY1_NOsNzCBO9UysfcO2gJYUMy1EbJA7KPagFxCWfoCvmDe37Y829VtsrIdQd9zcvdJLHnRS0Vb-M4N0jJ09SGYiDvUY-7E1YvziE_zcF4ivbTWhnHvkruXjZ0mf9Rxb1fVlbk_f3RfLP70aGqC8MA6pPe6thPTjoFqE-3GXUlOXUZVb8Tacy2vfYIVM-aVaCgYKASUSARMSFQHGX2Mi8T2uEveAu8SNp8IrN4_p4A0431',
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify({
 				queryInput: { text: { text: textInput, languageCode: 'en' } },
@@ -42,31 +47,33 @@ const SiriComponent: React.FC = () => {
 			.then(async (response) => {
 				console.log(response);
 				setData(response.queryResult.fulfillmentText);
+				speak(response.queryResult.fulfillmentText);
 			})
 			.catch((err) => console.error(err));
 	};
 
-	const fetchInfo = () => {
+	const fetchInfo = async () => {
+		const token = accessToken && JSON.parse(accessToken).token;
 		const options = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
-				Authorization:
-					'Bearer ya29.a0AfB_byCbnnqobSMgSzeySeArsJTZc_D2ccQL-PComxv-nltZEOPYrCCkMyHynR7e8_eanKg0VdjKzJ7ugiO24VOo805vNrvDz6P8bnZ9KDa1W92WpPXkNnz2lVotZVqgv7y0dJ_DrIlgGC0TlucbtN_jNPDPr8GJoUfuxMJRtvsvmLP-apIZRafD1EBpTvZMmbWJdllgJisgpqcK-F79_IY7VfJncqV8zZjkNjXIfDY1_NOsNzCBO9UysfcO2gJYUMy1EbJA7KPagFxCWfoCvmDe37Y829VtsrIdQd9zcvdJLHnRS0Vb-M4N0jJ09SGYiDvUY-7E1YvziE_zcF4ivbTWhnHvkruXjZ0mf9Rxb1fVlbk_f3RfLP70aGqC8MA6pPe6thPTjoFqE-3GXUlOXUZVb8Tacy2vfYIVM-aVaCgYKASUSARMSFQHGX2Mi8T2uEveAu8SNp8IrN4_p4A0431',
+				Authorization: `Bearer ${token}`,
 			},
 			body: '{"queryInput":{"text":{"text":"hi","languageCode":"en"}},"queryParams":{"source":"DIALOGFLOW_CONSOLE","timeZone":"Asia/Calcutta","sentimentAnalysisRequestConfig":{"analyzeQueryTextSentiment":true}}}',
 		};
 
-		return fetch(
-			'https://dialogflow.googleapis.com/v2beta1/projects/assistant-rmmeqm/locations/global/agent/sessions/6fd71115-e8b7-93e7-fcea-6f4cf1756b9a:detectIntent',
-			options,
-		)
-			.then((response) => response.json())
-			.then(async (response) => {
-				console.log(response);
-				setData(response.queryResult.fulfillmentText);
-			})
-			.catch((err) => console.error(err));
+		try {
+			const response = await fetch(
+				'https://dialogflow.googleapis.com/v2beta1/projects/assistant-rmmeqm/locations/global/agent/sessions/6fd71115-e8b7-93e7-fcea-6f4cf1756b9a:detectIntent',
+				options,
+			);
+			const response_1 = await response.json();
+			console.log(response_1);
+			setData(response_1.queryResult.fulfillmentText);
+		} catch (err) {
+			return console.error(err);
+		}
 	};
 
 	useEffect(() => {
@@ -96,11 +103,12 @@ const SiriComponent: React.FC = () => {
 	}, [listening]);
 
 	useEffect(() => {
-		speech = new SpeechSynthesisUtterance(text);
 		fetchInfo();
 	}, []);
 
 	const handleStartListening = () => {
+		console.log('Getting new access token');
+		getNewAccessToken();
 		setListening(true);
 	};
 
