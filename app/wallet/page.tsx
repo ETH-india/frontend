@@ -2,18 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import useAccessToken from '../hooks/useAccessToken';
 import { get } from 'http';
+import { useAtom } from 'jotai';
+import { modalAtom } from '../store/modalStore';
 
 const SiriComponent: React.FC = () => {
 	const [listening, setListening] = useState(false);
 	const [text, setText] = useState('');
-	const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = useAtom(modalAtom);
 	const [data, setData] = useState<string>('');
 	const [action, setAction] = useState<string>('');
 	const { accessToken, getNewAccessToken } = useAccessToken();
-	let speech: SpeechSynthesisUtterance;
 
-	const speak = async (text: string) => {
-		window.speechSynthesis.speak(speech);
+	const speak = (text: string) => {
+		const value = new SpeechSynthesisUtterance(text);
+		window.speechSynthesis.speak(value);
 	};
 
 	const walletOperations = (textInput: string) => {
@@ -45,11 +47,12 @@ const SiriComponent: React.FC = () => {
 			.then(async (response) => {
 				console.log(response);
 				setData(response.queryResult.fulfillmentText);
+				speak(response.queryResult.fulfillmentText);
 			})
 			.catch((err) => console.error(err));
 	};
 
-	const fetchInfo = () => {
+	const fetchInfo = async () => {
 		const token = accessToken && JSON.parse(accessToken).token;
 		const options = {
 			method: 'POST',
@@ -60,16 +63,17 @@ const SiriComponent: React.FC = () => {
 			body: '{"queryInput":{"text":{"text":"hi","languageCode":"en"}},"queryParams":{"source":"DIALOGFLOW_CONSOLE","timeZone":"Asia/Calcutta","sentimentAnalysisRequestConfig":{"analyzeQueryTextSentiment":true}}}',
 		};
 
-		return fetch(
-			'https://dialogflow.googleapis.com/v2beta1/projects/assistant-rmmeqm/locations/global/agent/sessions/6fd71115-e8b7-93e7-fcea-6f4cf1756b9a:detectIntent',
-			options,
-		)
-			.then((response) => response.json())
-			.then(async (response) => {
-				console.log(response);
-				setData(response.queryResult.fulfillmentText);
-			})
-			.catch((err) => console.error(err));
+		try {
+			const response = await fetch(
+				'https://dialogflow.googleapis.com/v2beta1/projects/assistant-rmmeqm/locations/global/agent/sessions/6fd71115-e8b7-93e7-fcea-6f4cf1756b9a:detectIntent',
+				options,
+			);
+			const response_1 = await response.json();
+			console.log(response_1);
+			setData(response_1.queryResult.fulfillmentText);
+		} catch (err) {
+			return console.error(err);
+		}
 	};
 
 	useEffect(() => {
@@ -99,7 +103,6 @@ const SiriComponent: React.FC = () => {
 	}, [listening]);
 
 	useEffect(() => {
-		speech = new SpeechSynthesisUtterance(text);
 		fetchInfo();
 	}, []);
 
