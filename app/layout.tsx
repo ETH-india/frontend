@@ -7,6 +7,7 @@ import useAccessToken from './hooks/useAccessToken';
 import { useAtom } from 'jotai';
 import { modalAtom } from './store/modalStore';
 import SVGComponent from './microphone';
+import useWalletFunctions from './hooks/useWalletFunctions';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,48 +24,9 @@ export default function RootLayout({
 	const [listening, setListening] = useState(false);
 	const [text, setText] = useState('');
 	const [showModal, setShowModal] = useAtom(modalAtom);
-	const [data, setData] = useState<string>('');
+	const { walletOperations, data, setData } = useWalletFunctions();
 	const [action, setAction] = useState<string>('');
 	const { accessToken, getNewAccessToken } = useAccessToken();
-
-	const speak = (text: string) => {
-		const value = new SpeechSynthesisUtterance(text);
-		window.speechSynthesis.speak(value);
-	};
-
-	const walletOperations = (textInput: string) => {
-		const token = accessToken && JSON.parse(accessToken).token;
-		console.log(textInput, accessToken);
-		const options = {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify({
-				queryInput: { text: { text: textInput, languageCode: 'en' } },
-				queryParams: {
-					source: 'DIALOGFLOW_CONSOLE',
-					timeZone: 'Asia/Calcutta',
-					sentimentAnalysisRequestConfig: {
-						analyzeQueryTextSentiment: true,
-					},
-				},
-			}),
-		};
-
-		return fetch(
-			'https://dialogflow.googleapis.com/v2beta1/projects/assistant-rmmeqm/locations/global/agent/sessions/6fd71115-e8b7-93e7-fcea-6f4cf1756b9a:detectIntent',
-			options,
-		)
-			.then((response) => response.json())
-			.then(async (response) => {
-				console.log(response);
-				setData(response.queryResult.fulfillmentText);
-				speak(response.queryResult.fulfillmentText);
-			})
-			.catch((err) => console.error(err));
-	};
 
 	const fetchInfo = async () => {
 		await getNewAccessToken();
@@ -178,9 +140,9 @@ export default function RootLayout({
 							</div>
 							{/* <button onClick={handleSendApiCall}>Send</button>
             <button onClick={() => setShowModal(false)}>Close</button> */}
-            </div>
-            <div className='floatingButton'>
-              {/* <input
+						</div>
+						<div className='floatingButton'>
+							{/* <input
                     type='text'
                     style={{ color: 'black' }}
                     value={action}
@@ -222,7 +184,7 @@ export default function RootLayout({
                     }}
                   /> */}
 							{listening ? (
-								<div className='fixed right-[270px] bottom-[55px]'>
+								<div className='fixed right-[270px] bottom-[65px]'>
 									<div className='circle'></div>
 									<div className='circle'></div>
 									<div className='circle'></div>
@@ -243,9 +205,9 @@ export default function RootLayout({
 										maxHeight: '50px',
 										overflow: 'scroll',
 										maxWidth: '300px',
-                    right: "28px",
-                    bottom: "20px",
-                    border: "1px black solid",
+										right: '28px',
+										bottom: '20px',
+										border: '1px black solid',
 									}}
 								>
 									{text}
