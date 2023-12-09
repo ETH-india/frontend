@@ -3,8 +3,11 @@ import { ethers } from 'ethers'
 import Safe, { EthersAdapter, SafeFactory, SafeAccountConfig  } from '@safe-global/protocol-kit'
 import SafeApiKit from '@safe-global/api-kit'
 import { MetaTransactionData } from '@safe-global/safe-core-sdk-types'
+import { useState } from 'react'
 
 export default function Home() {
+
+  const [showModal, setShowModal] = useState(false)
 
   const createAccount = async () => {
     const wallet = ethers.Wallet.createRandom()
@@ -104,7 +107,10 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between">
+      <nav className='mt-8 ml-auto mr-14'>
+        <button className={`bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto`} onClick={() => {setShowModal(true)}} > Connect </button>
+      </nav>
       <div className='flex flex-col border-[#757575] border-solid border m-auto bg-[#131313] w-[27rem] h-[24rem] rounded-xl overflow-hidden'>
         <div className='h-[7rem] flex mt-8 bg-[#1b1b1b] mx-3 rounded-lg'>
           <div className='flex flex-col'>
@@ -128,6 +134,19 @@ export default function Home() {
             </div>
         </div>
         <button onClick={() => {doATxn()}} className='bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto'> Approve </button>
+      </div>
+      <div className={`fixed bg-[#0000006e] inset-0 ${showModal ? "" : "hidden"}`}>
+        <div className='w-[35rem] flex flex-col relative h-[20rem] bg-[#3b3b3b] rounded-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+          <svg onClick={() => setShowModal(false)} className='absolute cursor-pointer w-7 h-7 right-[2%] top-[3%]' fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <div className='p-8 rounded-[6px] border border-solid border-white h-full m-10 mt-8'>
+            <div className='flex flex-col justify-between items-center'>
+              <h2>Connect with IRIS :)</h2>
+              <button className='mt-20'>Connect</button>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   )
