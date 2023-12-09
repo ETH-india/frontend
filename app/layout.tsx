@@ -222,7 +222,7 @@ export default function RootLayout({
                     }}
                   /> */}
 							{listening ? (
-								<div className='animation-wrapper'>
+								<div className='fixed right-[270px] bottom-[55px]'>
 									<div className='circle'></div>
 									<div className='circle'></div>
 									<div className='circle'></div>
@@ -235,7 +235,7 @@ export default function RootLayout({
 							) : (
 								<h3
 									style={{
-										color: 'white',
+										color: 'black',
 										position: 'fixed',
 										width: '400px',
 										padding: '1rem',
