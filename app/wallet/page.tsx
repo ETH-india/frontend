@@ -155,9 +155,8 @@ const SiriComponent: React.FC = () => {
 								<div
 									style={{
 										color: 'black',
-										fontSize: '15px',
+										fontSize: '13px',
 										fontWeight: 500,
-										fontFamily: 'inter',
 									}}
 								>
 									{data ? data : 'loading...'}
