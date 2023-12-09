@@ -210,22 +210,34 @@ const SiriComponent: React.FC = () => {
 											walletOperations(action);
 									}}
 								/> */}
-
-						<h3
-							style={{
-								color: 'black',
-								position: 'fixed',
-								width: '400px',
-								padding: '1rem',
-								border: '1px solid #e0e0e0',
-								borderRadius: '12px 12px 12px 12px',
-								maxHeight: '50px',
-								overflow: 'scroll',
-								maxWidth: '300px',
-							}}
-						>
-							{text}
-						</h3>
+						{listening ? (
+							<div className='animation-wrapper'>
+								<div className='circle'></div>
+								<div className='circle'></div>
+								<div className='circle'></div>
+								<div className='circle'></div>
+								<div className='circle'></div>
+								<div className='circle'></div>
+								<div className='circle'></div>
+								<div className='circle'></div>
+							</div>
+						) : (
+							<h3
+								style={{
+									color: 'black',
+									position: 'fixed',
+									width: '400px',
+									padding: '1rem',
+									border: '1px solid #e0e0e0',
+									borderRadius: '12px 12px 12px 12px',
+									maxHeight: '50px',
+									overflow: 'scroll',
+									maxWidth: '300px',
+								}}
+							>
+								{text}
+							</h3>
+						)}
 					</div>
 				</>
 			)}
