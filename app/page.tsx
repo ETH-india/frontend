@@ -1,8 +1,8 @@
 "use client"
 import { ethers } from 'ethers'
-import Image from 'next/image'
 import Safe, { EthersAdapter, SafeFactory, SafeAccountConfig  } from '@safe-global/protocol-kit'
-import SafeApiKit from '@safe-global/api-kit'\
+import SafeApiKit from '@safe-global/api-kit'
+import { MetaTransactionData } from '@safe-global/safe-core-sdk-types'
 
 export default function Home() {
 
@@ -44,9 +44,63 @@ export default function Home() {
   }
 
   const doATxn = async () => {
+
     //get deployed safe
     //get users address
     //do a sample txn
+
+    // Any address can be used. In this example you will use vitalik.eth
+    const destination = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+    const amount = ethers.parseUnits('0.00005', 'ether').toString()
+
+    const safeTransactionData: MetaTransactionData = {
+      to: destination,
+      data: '0x',
+      value: amount
+    }
+
+    const RPC_URL='https://eth-goerli.public.blastapi.io'
+    const provider = new ethers.JsonRpcProvider(RPC_URL)
+
+    const owner1Signer = new ethers.Wallet("b32da80186b4d6e50de0cbe35c93cad33c64eb6cc0ed0ff5c52dda8b8be2a596", provider) //change
+
+    const ethAdapter = new EthersAdapter({
+      ethers,
+      signerOrProvider: owner1Signer
+    })
+
+    const safeAddress = "0xB47Ee10d9209a5389eFDe55cd3A1B006791b4630"
+
+    const safeSdk = await Safe.create({ ethAdapter, safeAddress })
+
+    // Create a Safe transaction with the provided parameters
+    const safeTransaction = await safeSdk.createTransaction({ transactions: [safeTransactionData] })
+
+    // Deterministic hash based on transaction parameters
+    const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
+
+    // Sign transaction to verify that the transaction is coming from owner 1
+    const senderSignature = await safeSdk.signTransactionHash(safeTxHash)
+
+    const safeService = new SafeApiKit({
+      chainId: BigInt(5)
+    })
+
+    await safeService.proposeTransaction({
+      safeAddress,
+      safeTransactionData: safeTransaction.data,
+      safeTxHash,
+      senderAddress: await owner1Signer.getAddress(),
+      senderSignature: senderSignature.data,
+    })
+
+    const pendingTransactions = (await safeService.getPendingTransactions(safeAddress)).results
+
+    const executeTxResponse = await safeSdk.executeTransaction(safeTransaction)
+    const receipt = await executeTxResponse.transactionResponse?.wait()
+
+    console.log('Transaction executed:')
+    console.log(`https://goerli.etherscan.io/tx/${receipt}`)
   }
 
   return (
@@ -73,7 +127,7 @@ export default function Home() {
               <div className='border border-white w-[7rem] h-8 rounded-2xl text-center flex justify-center items-center font-semibold tracking-wide'> USDC </div>
             </div>
         </div>
-        <button className='bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto'> Approve </button>
+        <button onClick={() => {doATxn()}} className='bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto'> Approve </button>
       </div>
     </main>
   )
