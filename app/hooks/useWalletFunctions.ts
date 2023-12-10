@@ -43,6 +43,7 @@ export default function useWalletFunctions() {
 		}
 	};
 	const walletOperations = (textInput: string) => {
+		setData('Loading...');
 		const token = accessToken && JSON.parse(accessToken).token;
 		console.log(textInput, accessToken);
 		const options = {

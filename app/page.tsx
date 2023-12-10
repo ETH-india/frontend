@@ -17,7 +17,8 @@ export default function Home() {
 	const [showModal, setShowModal] = useState(false);
 	const [connectedLabel, setConnectedLabel] = useState('Connect');
 
-	const { connect, setData, connected, data } = useWalletFunctions();
+	const { connect, setData, connected, data, walletOperations } =
+		useWalletFunctions();
 
 	useEffect(() => {
 		if (connected) {
@@ -133,11 +134,13 @@ export default function Home() {
 		console.log('Transaction executed:');
 		console.log(`https://sepolia.etherscan.io/tx/${receipt}`);
 	};
-	
+
 	const approveUSDC = async () => {
 		//get deployed safe
 		//get users address
 		//do a sample txn
+
+		walletOperations('Approve 100 tokens');
 
 		// Any address can be used. In this example you will use vitalik.eth
 		const destination = '0xa2C083B17De326549212b25f3fb77Ad0f92Ae58c';
@@ -151,21 +154,21 @@ export default function Home() {
 
 		const RPC_URL = 'https://eth-sepolia.public.blastapi.io';
 		const provider = new ethers.JsonRpcProvider(RPC_URL);
-		console.log("here")
+		console.log('here');
 		const owner1Signer = new ethers.Wallet(
 			'b32da80186b4d6e50de0cbe35c93cad33c64eb6cc0ed0ff5c52dda8b8be2a596',
 			provider,
-			); //change
-			
-			const ethAdapter = new EthersAdapter({
-				ethers,
-				signerOrProvider: owner1Signer,
-			});
-			
-			const safeAddress = '0x458d004312Bd2e880f6e67DFd108746dDA2C67B3';
-			
-			console.log("here2")
-			const safeSdk = await Safe.create({ ethAdapter, safeAddress });
+		); //change
+
+		const ethAdapter = new EthersAdapter({
+			ethers,
+			signerOrProvider: owner1Signer,
+		});
+
+		const safeAddress = '0x458d004312Bd2e880f6e67DFd108746dDA2C67B3';
+
+		console.log('here2');
+		const safeSdk = await Safe.create({ ethAdapter, safeAddress });
 
 		// Create a Safe transaction with the provided parameters
 		const safeTransaction = await safeSdk.createTransaction({
@@ -201,7 +204,7 @@ export default function Home() {
 
 		console.log('Transaction executed:');
 		console.log(`https://sepolia.etherscan.io/tx/${receipt}`);
-	}
+	};
 
 	const swapTokens = async () => {
 		//get deployed safe
@@ -269,11 +272,10 @@ export default function Home() {
 
 		console.log('Transaction executed:');
 		console.log(`https://sepolia.etherscan.io/tx/${receipt}`);
-	}
+	};
 
 	return (
 		<main className='flex min-h-screen flex-col bg-white items-center justify-between'>
-			<button onClick={() => {swapTokens()}}>Lmaolmaolmaolmaolmaolmao</button>
 			<nav className='mt-8 mr-auto ml-14'>
 				<button
 					className={`bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto`}
@@ -339,7 +341,7 @@ export default function Home() {
 				</div>
 				<button
 					onClick={() => {
-						doATxn();
+						walletOperations('approve 100 tokens');
 					}}
 					className='bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto'
 				>

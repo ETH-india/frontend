@@ -174,6 +174,7 @@ export default function RootLayout({
 									style={{
 										color: 'black',
 										position: 'fixed',
+										backgroundColor: 'white',
 										width: '400px',
 										padding: '1rem',
 										borderRadius: '12px 12px 12px 12px',
