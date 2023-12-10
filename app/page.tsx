@@ -24,10 +24,11 @@ export default function Home() {
 			setConnectedLabel('Connected');
 		}
 	}, [connected, data]);
+
 	const createAccount = async () => {
 		const wallet = ethers.Wallet.createRandom();
 
-		const RPC_URL = 'https://eth-goerli.public.blastapi.io';
+		const RPC_URL = 'https://eth-sepolia.public.blastapi.io';
 		const provider = new ethers.JsonRpcProvider(RPC_URL);
 
 		const owner1Signer = new ethers.Wallet(
@@ -41,7 +42,7 @@ export default function Home() {
 		});
 
 		const safeApiKit = new SafeApiKit({
-			chainId: BigInt(5),
+			chainId: BigInt(11155111),
 		});
 
 		const safeFactory = await SafeFactory.create({
@@ -61,7 +62,7 @@ export default function Home() {
 		const safeAddress = await safeSdkOwner1.getAddress();
 
 		console.log('Your Safe has been deployed:');
-		console.log(`https://goerli.etherscan.io/address/${safeAddress}`);
+		console.log(`https://sepolia.etherscan.io/address/${safeAddress}`);
 		console.log(`https://app.safe.global/gor:${safeAddress}`);
 	};
 
@@ -76,11 +77,11 @@ export default function Home() {
 
 		const safeTransactionData: MetaTransactionData = {
 			to: destination,
-			data: '0x',
+			data: '0x94b918de00000000000000000000000000000000000000000000000000005af3107a4000',
 			value: amount,
 		};
 
-		const RPC_URL = 'https://eth-goerli.public.blastapi.io';
+		const RPC_URL = 'https://eth-sepolia.public.blastapi.io';
 		const provider = new ethers.JsonRpcProvider(RPC_URL);
 
 		const owner1Signer = new ethers.Wallet(
@@ -93,7 +94,7 @@ export default function Home() {
 			signerOrProvider: owner1Signer,
 		});
 
-		const safeAddress = '0xB47Ee10d9209a5389eFDe55cd3A1B006791b4630';
+		const safeAddress = '0x458d004312Bd2e880f6e67DFd108746dDA2C67B3';
 
 		const safeSdk = await Safe.create({ ethAdapter, safeAddress });
 
@@ -109,7 +110,7 @@ export default function Home() {
 		const senderSignature = await safeSdk.signTransactionHash(safeTxHash);
 
 		const safeService = new SafeApiKit({
-			chainId: BigInt(5),
+			chainId: BigInt(11155111),
 		});
 
 		await safeService.proposeTransaction({
@@ -130,11 +131,149 @@ export default function Home() {
 		const receipt = await executeTxResponse.transactionResponse?.wait();
 
 		console.log('Transaction executed:');
-		console.log(`https://goerli.etherscan.io/tx/${receipt}`);
+		console.log(`https://sepolia.etherscan.io/tx/${receipt}`);
 	};
+	
+	const approveUSDC = async () => {
+		//get deployed safe
+		//get users address
+		//do a sample txn
+
+		// Any address can be used. In this example you will use vitalik.eth
+		const destination = '0xa2C083B17De326549212b25f3fb77Ad0f92Ae58c';
+		const amount = ethers.parseUnits('0', 'ether').toString();
+
+		const safeTransactionData: MetaTransactionData = {
+			to: destination,
+			data: '0x095ea7b3000000000000000000000000fc541752dc0bc50697f2c1981159877b9f424e8000000000000000000000000000000000000000000000021e19e0c9bab2400000',
+			value: amount,
+		};
+
+		const RPC_URL = 'https://eth-sepolia.public.blastapi.io';
+		const provider = new ethers.JsonRpcProvider(RPC_URL);
+		console.log("here")
+		const owner1Signer = new ethers.Wallet(
+			'b32da80186b4d6e50de0cbe35c93cad33c64eb6cc0ed0ff5c52dda8b8be2a596',
+			provider,
+			); //change
+			
+			const ethAdapter = new EthersAdapter({
+				ethers,
+				signerOrProvider: owner1Signer,
+			});
+			
+			const safeAddress = '0x458d004312Bd2e880f6e67DFd108746dDA2C67B3';
+			
+			console.log("here2")
+			const safeSdk = await Safe.create({ ethAdapter, safeAddress });
+
+		// Create a Safe transaction with the provided parameters
+		const safeTransaction = await safeSdk.createTransaction({
+			transactions: [safeTransactionData],
+		});
+
+		// Deterministic hash based on transaction parameters
+		const safeTxHash = await safeSdk.getTransactionHash(safeTransaction);
+
+		// Sign transaction to verify that the transaction is coming from owner 1
+		const senderSignature = await safeSdk.signTransactionHash(safeTxHash);
+
+		const safeService = new SafeApiKit({
+			chainId: BigInt(11155111),
+		});
+
+		await safeService.proposeTransaction({
+			safeAddress,
+			safeTransactionData: safeTransaction.data,
+			safeTxHash,
+			senderAddress: await owner1Signer.getAddress(),
+			senderSignature: senderSignature.data,
+		});
+
+		const pendingTransactions = (
+			await safeService.getPendingTransactions(safeAddress)
+		).results;
+
+		const executeTxResponse = await safeSdk.executeTransaction(
+			safeTransaction,
+		);
+		const receipt = await executeTxResponse.transactionResponse?.wait();
+
+		console.log('Transaction executed:');
+		console.log(`https://sepolia.etherscan.io/tx/${receipt}`);
+	}
+
+	const swapTokens = async () => {
+		//get deployed safe
+		//get users address
+		//do a sample txn
+
+		// Any address can be used. In this example you will use vitalik.eth
+		const destination = '0xfc541752DC0bC50697f2c1981159877b9f424E80';
+		const amount = ethers.parseUnits('0', 'ether').toString();
+
+		const safeTransactionData: MetaTransactionData = {
+			to: destination,
+			data: '0x94b918de00000000000000000000000000000000000000000000000000000002540be400',
+			value: amount,
+		};
+
+		const RPC_URL = 'https://eth-sepolia.public.blastapi.io';
+		const provider = new ethers.JsonRpcProvider(RPC_URL);
+
+		const owner1Signer = new ethers.Wallet(
+			'b32da80186b4d6e50de0cbe35c93cad33c64eb6cc0ed0ff5c52dda8b8be2a596',
+			provider,
+		); //change
+
+		const ethAdapter = new EthersAdapter({
+			ethers,
+			signerOrProvider: owner1Signer,
+		});
+
+		const safeAddress = '0x458d004312Bd2e880f6e67DFd108746dDA2C67B3';
+
+		const safeSdk = await Safe.create({ ethAdapter, safeAddress });
+
+		// Create a Safe transaction with the provided parameters
+		const safeTransaction = await safeSdk.createTransaction({
+			transactions: [safeTransactionData],
+		});
+
+		// Deterministic hash based on transaction parameters
+		const safeTxHash = await safeSdk.getTransactionHash(safeTransaction);
+
+		// Sign transaction to verify that the transaction is coming from owner 1
+		const senderSignature = await safeSdk.signTransactionHash(safeTxHash);
+
+		const safeService = new SafeApiKit({
+			chainId: BigInt(11155111),
+		});
+
+		await safeService.proposeTransaction({
+			safeAddress,
+			safeTransactionData: safeTransaction.data,
+			safeTxHash,
+			senderAddress: await owner1Signer.getAddress(),
+			senderSignature: senderSignature.data,
+		});
+
+		const pendingTransactions = (
+			await safeService.getPendingTransactions(safeAddress)
+		).results;
+
+		const executeTxResponse = await safeSdk.executeTransaction(
+			safeTransaction,
+		);
+		const receipt = await executeTxResponse.transactionResponse?.wait();
+
+		console.log('Transaction executed:');
+		console.log(`https://sepolia.etherscan.io/tx/${receipt}`);
+	}
 
 	return (
 		<main className='flex min-h-screen flex-col bg-white items-center justify-between'>
+			<button onClick={() => {swapTokens()}}>Lmaolmaolmaolmaolmaolmao</button>
 			<nav className='mt-8 mr-auto ml-14'>
 				<button
 					className={`bg-[#e776c2] h-10 w-[13rem] rounded-xl m-auto`}
