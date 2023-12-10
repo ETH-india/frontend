@@ -40,17 +40,46 @@ button {
 }
 
 .modal {
-  position: fixed;
-  top: 10%;
-  right: -10%;
+
+  /* position: relative;
+ 
+right: -89%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-
-  padding: 20px;
+  justify-content: space-between;
+  padding: 50px;
   border-radius: 8px;
 
   width: 300px;
+  text-align: center; */
+}
+
+.floatingButton {
+
+  position: relative;
+  top: 83%;
+right: -90%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  justify-content: space-between;
+
+
+  width: 300px;
   text-align: center;
+}
+
+.floatingText {
+
+  /* position: relative;
+  top: 55%;
+right: -87%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  justify-content: space-between;
+
+
+  width: 300px;
+  text-align: center; */
 }
 
 .modal p {
@@ -132,6 +161,262 @@ button:focus {
       .voice-elt {
         position: absolute;
         right: 2rem;
-        top: 1rem;
+        top: -2rem;
         
       }
+
+      .circle {
+	 position: absolute;
+	 width: 10px;
+	 height: 10px;
+	 border-radius: 100%;
+	 background-color: turquoise;
+	 animation: move-the-circle 1s infinite;
+	 transform-origin: center center;
+}
+ .circle:nth-child(1) {
+	 left: 0px;
+	 animation-delay: 0.1s;
+}
+ .circle:nth-child(2) {
+	 left: 30px;
+	 animation-delay: 0.2s;
+}
+ .circle:nth-child(3) {
+	 left: 60px;
+	 animation-delay: 0.3s;
+}
+ .circle:nth-child(4) {
+	 left: 90px;
+	 animation-delay: 0.4s;
+}
+ .circle:nth-child(5) {
+	 left: 120px;
+	 animation-delay: 0.5s;
+}
+ .circle:nth-child(6) {
+	 left: 150px;
+	 animation-delay: 0.6s;
+}
+ .circle:nth-child(7) {
+	 left: 180px;
+	 animation-delay: 0.7s;
+}
+ .circle:nth-child(8) {
+	 left: 210px;
+	 animation-delay: 0.8s;
+}
+ @keyframes move-the-circle {
+	 0% {
+		 transform: translate(0, 0) scale(1);
+		 opacity: 1;
+		 background-color: turquoise;
+	}
+	 50% {
+		 transform: translate(0, 50px) scale(0.4);
+		 opacity: 0.5;
+		 background-color: blue;
+	}
+	 100% {
+		 transform: translate(0, 0) scale(1);
+		 opacity: 1;
+		 background-color: turquoise;
+	}
+}
+
+.wrap {
+	 top: 90%;
+	 left: 90%;
+	 margin-left: -100px;
+   margin-top: 10px;
+   transform: translate(-50%, -50%);
+	 -webkit-transform: translate(-50%, -50%);
+	 -moz-transform: translate(-50%, -50%);
+	 -o-transform: translate(-50%, -50%);
+	 -ms-transform: translate(-50%, -50%);
+	 position: absolute;
+}
+ ul {
+  transform: translate(-50%, -50%);
+	 -webkit-transform: rotate3d(0, 1, 0, 45deg);
+	 -moz-transform: rotate3d(0, 1, 0, 45deg);
+	 -o-transform: rotate3d(0, 1, 0, 45deg);
+	 -ms-transform: rotate3d(0, 1, 0, 45deg);
+}
+ ul li {
+	 list-style: none;
+	 box-shadow: inset 1px 1px 40px #42d8ad;
+	 background: #1c1c1c;
+	 border-radius: 55%;
+	 position: absolute;
+	 top: 50%;
+	 left: 50%;
+}
+ ul li:nth-child(1) {
+	 border: 1px solid #189c90;
+	 width: 5px;
+	 height: 5px;
+	 z-index: -1;
+	 margin-top: -15px;
+	 margin-left: 5px;
+   animation: spin 2s 0.2s infinite;;
+	 -webkit-animation: spin 2s 0.2s infinite;
+	 -moz-animation: spin 2s 0.2s infinite;
+	 -o-animation: spin 2s 0.2s infinite;
+	 -ms-animation: spin 2s 0.2s infinite;
+}
+ ul li:nth-child(2) {
+	 border: 1px solid #cbbfd5;
+	 width: 10px;
+	 height: 10px;
+	 z-index: -2;
+	 margin-top: -30px;
+	 margin-left: 10px;
+   animation: spin 2s 0.4s infinite;
+	 -webkit-animation: spin 2s 0.4s infinite;
+	 -moz-animation: spin 2s 0.4s infinite;
+	 -o-animation: spin 2s 0.4s infinite;
+	 -ms-animation: spin 2s 0.4s infinite;
+}
+ ul li:nth-child(3) {
+	 border: 1px solid #158a80;
+	 width: 40px;
+	 height: 40px;
+	 z-index: -3;
+	 margin-top: -45px;
+	 margin-left: 15px;
+   animation: spin 2s 0.6s infinite;
+	 -webkit-animation: spin 2s 0.6s infinite;
+	 -moz-animation: spin 2s 0.6s infinite;
+	 -o-animation: spin 2s 0.6s infinite;
+	 -ms-animation: spin 2s 0.6s infinite;
+}
+ ul li:nth-child(4) {
+	 border: 1px solid #9e74bf;
+	 width: 50px;
+	 height: 50px;
+	 z-index: -4;
+	 margin-top: -60px;
+	 margin-left: 20px;
+   animation: spin 2s 0.8s infinite;
+	 -webkit-animation: spin 2s 0.8s infinite;
+	 -moz-animation: spin 2s 0.8s infinite;
+	 -o-animation: spin 2s 0.8s infinite;
+	 -ms-animation: spin 2s 0.8s infinite;
+}
+ ul li:nth-child(5) {
+	 border: 1px solid #12796f;
+	 width: 60px;
+	 height: 60px;
+	 z-index: -5;
+	 margin-top: -75px;
+	 margin-left: 25px;
+   animation: spin 2s 1s infinite;
+	 -webkit-animation: spin 2s 1s infinite;
+	 -moz-animation: spin 2s 1s infinite;
+	 -o-animation: spin 2s 1s infinite;
+	 -ms-animation: spin 2s 1s infinite;
+}
+ ul li:nth-child(6) {
+	 border: 1px solid #117067;
+	 width: 70px;
+	 height: 70px;
+	 z-index: -6;
+	 margin-top: -90px;
+	 margin-left: 30px;
+   animation: spin 2s 1.2s infinite;
+	 -webkit-animation: spin 2s 1.2s infinite;
+	 -moz-animation: spin 2s 1.2s infinite;
+	 -o-animation: spin 2s 1.2s infinite;
+	 -ms-animation: spin 2s 1.2s infinite;
+}
+ ul li:nth-child(7) {
+	 border: 1px solid #10675f;
+	 width: 80px;
+	 height:80px;
+	 z-index: -7;
+	 margin-top: -105px;
+	 margin-left: 35px;
+   animation: spin 2s 1.4s infinite;
+	 -webkit-animation: spin 2s 1.4s infinite;
+	 -moz-animation: spin 2s 1.4s infinite;
+	 -o-animation: spin 2s 1.4s infinite;
+	 -ms-animation: spin 2s 1.4s infinite;
+}
+ ul li:nth-child(8) {
+	 border: 1px solid #8F00FF;
+	 width: 90px;
+	 height: 90px;
+	 z-index: -8;
+	 margin-top: -120px;
+	 margin-left: 40px;
+   animation: spin 2s 1.6s infinite;
+	 -webkit-animation: spin 2s 1.6s infinite;
+	 -moz-animation: spin 2s 1.6s infinite;
+	 -o-animation: spin 2s 1.6s infinite;
+	 -ms-animation: spin 2s 1.6s infinite;
+}
+ ul li:nth-child(9) {
+	 border: 1px solid #0d554f;
+	 width: 80px;
+	 height: 80px;
+	 z-index: -9;
+	 margin-top: -135px;
+	 margin-left: 45px;
+   animation: spin 2s 1.8s infinite;
+	 -webkit-animation: spin 2s 1.8s infinite;
+	 -moz-animation: spin 2s 1.8s infinite;
+	 -o-animation: spin 2s 1.8s infinite;
+	 -ms-animation: spin 2s 1.8s infinite;
+}
+ ul li:nth-child(10) {
+	 border: 1px solid #8F00FF;
+	 width: 90px;
+	 height: 90px;
+	 z-index: -10;
+	 margin-top: -150px;
+	 margin-left: 50px;
+   animation: spin 2s 2s infinite;
+	 -webkit-animation: spin 2s 2s infinite;
+	 -moz-animation: spin 2s 2s infinite;
+	 -o-animation: spin 2s 2s infinite;
+	 -ms-animation: spin 2s 2s infinite;
+}
+ ul li:nth-child(11) {
+	 border: 1px solid #8F00FF;
+	 width: 80px;
+	 height: 80px;
+	 z-index: -11;
+	 margin-top: -165px;
+	 margin-left: 55px;
+   animation: spin 2s 2.2s infinite;
+	 -webkit-animation: spin 2s 2.2s infinite;
+	 -moz-animation: spin 2s 2.2s infinite;
+	 -o-animation: spin 2s 2.2s infinite;
+	 -ms-animation: spin 2s 2.2s infinite;
+}
+ ul li:nth-child(12) {
+	 border: 1px solid #8F00FF;
+	 width: 70px;
+	 height: 70px;
+	 z-index: -12;
+	 margin-top: -180px;
+	 margin-left: 60px;
+   animation: spin 2s 2.4s infinite;
+	 -webkit-animation: spin 2s 2.4s infinite;
+	 -moz-animation: spin 2s 2.4s infinite;
+	 -o-animation: spin 2s 2.4s infinite;
+	 -ms-animation: spin 2s 2.4s infinite;
+}
+ @keyframes spin {
+	 0% {
+		 -webkit-transform: rotate(0deg) scale(1);
+	}
+	 50% {
+		 -webkit-transform: rotate(360deg) scale(2);
+	}
+	 100% {
+		 -webkit-transform: rotate(0deg) scale(1);
+	}
+}
+ 
